@@ -10371,7 +10371,8 @@ button.TextWrapped = true
 button.MouseButton1Down:connect(function()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
-RequestCommand:InvokeServer(";music 1837808628 ;volume inf")      -- F3X Spinning Decal Foot Part Script
+RequestCommand:InvokeServer(";freeze me")      -- F3X Spinning Decal Foot Part Script
+RequestCommand:InvokeServer(";music 1837808628 ;volume inf") 
 -- เธชเธฃเนเธฒเธ Part เธเธเธฒเธ” 65/1/66 เธเธฃเธฑเธ Transparency เน€เธเนเธ 1 (Material Tool) + เนเธชเน Decal เธ”เนเธฒเธเธเธ + เธ•เธดเธ”เธ•เธฒเธกเน€เธ—เนเธฒเนเธฅเธฐเธซเธกเธธเธ
 
 local Players = game:GetService("Players")
