@@ -31270,7 +31270,7 @@ while true do
 		end
 
 		if not hasBTools then
-			RequestCommandSilent:InvokeServer(";btools ;hat me 126479567335532")
+			RequestCommandSilent:InvokeServer(";btools")
 		end
 	end
 
