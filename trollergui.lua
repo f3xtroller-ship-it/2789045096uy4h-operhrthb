@@ -28479,7 +28479,7 @@ button.MouseButton1Down:connect(function()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local RequestCommandSilent = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
 
-	RequestCommandSilent:InvokeServer(";titleb me " .. text)
+	RequestCommandSilent:InvokeServer(";titledb me " .. text)
 
 	f.TextStrokeColor3 = Color3.new(0,0,0)
 	f.TextColor3 = Color3.new(frame.Settings.Page2["Billboard Gui Color"].TextBox1.Text/255,frame.Settings.Page2["Billboard Gui Color"].TextBox2.Text/255,frame.Settings.Page2["Billboard Gui Color"].TextBox3.Text/255)
@@ -30786,7 +30786,7 @@ textbx.Position = UDim2.new(0,0,0.5,0)
 textbx.Size = UDim2.new(0.99,1,0.5,-1)
 textbx.Font = tef
 textbx.FontSize = "Size14"
-textbx.Text = "F3XTroller67"
+textbx.Text = "real f3xtroller"
 textbx.TextColor3 = whit
 local titl = Instance.new("TextLabel")
 titl.Parent = bgt
