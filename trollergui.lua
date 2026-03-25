@@ -28156,6 +28156,103 @@ button.MouseButton1Down:connect(function()
 	
 		RandomRotate()
 end)
+--rhygserujdhg--
+local button = Instance.new("TextButton")
+button.Parent = localp
+button.BackgroundColor3 = blak
+button.BorderColor3 = rede
+button.BorderSizePixel = 3
+button.Name = "Anti-Robloxian"
+button.Position = UDim2.new(0,0,0,33)
+button.Size = UDim2.new(0.5,0,0,30)
+button.ZIndex = 2
+button.Font = tef
+button.FontSize = "Size14"
+button.Text = "Anti-Robloxian"
+button.TextColor3 = whit
+button.TextWrapped = true
+button.MouseButton1Down:connect(function()
+	local player = game.Players.LocalPlayer
+	local originalChar = player.Character or player.CharacterAdded:Wait()
+	local tool
+	while player.Character == originalChar do
+		for i, v in player:GetDescendants() do
+			if v.Name == "SyncAPI" then
+				tool = v.Parent
+			end
+		end
+
+		for i, v in game.ReplicatedStorage:GetDescendants() do
+			if v.Name == "SyncAPI" then
+				tool = v.Parent
+			end
+		end
+
+		local remote = tool.SyncAPI.ServerEndpoint
+
+		function _(args)
+			remote:InvokeServer(unpack(args))
+		end
+
+		function DestroyPart(part)
+			spawn(function()
+				local args = {
+					[1] = "Remove",
+					[2] = {
+						[1] = part
+					}
+				}
+				_(args)
+			end)
+		end
+
+		function AddDecor(part, dec)
+			spawn(function()
+				local args = {
+					[1] = "CreateDecorations",
+					[2] = {
+						[1] = {
+							["Part"] = part,
+							["DecorationType"] = dec
+						}
+					}
+				}
+				_(args)
+			end)
+		end
+
+		function a()
+			local dist = 17
+			local distance = dist
+			local Player = game.Players.LocalPlayer
+
+			if Player then
+				local c = game.Players:GetChildren()
+				for i = 1, #c do
+					if c[i].Name ~= Player.Name then
+						if c[i].Character and c[i].Character:FindFirstChild("Head") then
+							local char = c[i].Character
+							local torso = game.Workspace[Player.Name]:FindFirstChild("Torso")
+							if torso and c[i]:DistanceFromCharacter(torso.Position) <= distance then
+								DestroyPart(char:FindFirstChild("Head"))
+								for _, part in ipairs(char:GetChildren()) do
+									if part:IsA("BasePart") then
+										AddDecor(part, "Fire")
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+
+
+		spawn(a)
+		wait()
+	end
+
+end)
 --
 local button = Instance.new("TextButton")
 button.Parent = localp
