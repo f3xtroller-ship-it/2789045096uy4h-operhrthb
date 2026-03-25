@@ -28067,389 +28067,94 @@ button.Size = UDim2.new(0.5,-3,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "John Doe"
+button.Text = "Rotate (ty femblocks)"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-local player = game.Players.LocalPlayer
-    local char = player.Character
-    local tool
-    for i,v in player:GetDescendants() do
-        if v.Name == "SyncAPI" then
-            tool = v.Parent
-        end
-    end
-    for i,v in game.ReplicatedStorage:GetDescendants() do
-        if v.Name == "SyncAPI" then
-            tool = v.Parent
-        end
-    end
-   
-    remote = tool.SyncAPI.ServerEndpoint
-    function _(args)
-        remote:InvokeServer(unpack(args))
-    end
-
-
-local function Color(part, color)
-	local args = {
-		"SyncColor",
-		{
-			{
-				Part = part,
-				Color = color,
-				UnionColoring = false
-			}
-		}
-	}
-	_(args)
-end
-
-local function applyDecorationToPart(part) 
-    
-    local argsCreate = {
-        [1] = "CreateDecorations",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Fire"
-            }
-        }
-    }
-
-   
-    local argsSync = {
-        [1] = "SyncDecorate",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Fire",
-                ["Size"] = 3,
-                ["Heat"] = 25,
-                ["Color"] = Color3.fromRGB(255, 0, 0), 
-                ["SecondaryColor"] = Color3.fromRGB(255, 0, 0) 
-            } 
-        } 
-    }
-
-    
-    _(argsCreate)
-    _(argsSync)
-end
-
-local function Parter(part) 
-    
-    local argsCreate = {
-        [1] = "CreateDecorations",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Smoke"
-            }
-        }
-    }
-
-   
-    local argsSync = {
-        [1] = "SyncDecorate",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Smoke",
-                ["Size"] = 3,
-                ["Color"] = Color3.fromRGB(255, 0, 0),  
-            } 
-        } 
-    }
-
-    
-    _(argsCreate)
-    _(argsSync)
-end
-local function eyePart(part) 
-    
-    local argsCreate = {
-        [1] = "CreateDecorations",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Fire"
-            }
-        }
-    }
-
-   
-    local argsSync = {
-        [1] = "SyncDecorate",
-        [2] = {
-            [1] = {
-                ["Part"] = part,
-                ["DecorationType"] = "Fire",
-                ["Size"] = 1,
-                ["Heat"] = 12,
-                ["Color"] = Color3.fromRGB(155, 0, 0), 
-                ["SecondaryColor"] = Color3.fromRGB(255, 0, 0) 
-            } 
-        } 
-    }
-
-    
-    _(argsCreate)
-    _(argsSync)
-end
-
-
-
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local Players = game:GetService("Players")
-
-local UserInputService = game:GetService("UserInputService")
-
-local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandModification
-
-
-
-
-local player = Players.LocalPlayer
-
-local character = player.Character or player.CharacterAdded:Wait()
-
-    
-RequestCommand:InvokeServer(";removeaccessories")
-RequestCommand:InvokeServer(";titlebk me John Doe")
-RequestCommand:InvokeServer(";char me fortnite2007Hi")
-
-
-wait(1)
-RequestCommand:InvokeServer(";hat me 107676946962151")
-wait(0.5)
-RequestCommand:InvokeServer(";hat me 18196403126")
-wait(0.5)
-RequestCommand:InvokeServer(";hat me 18801497637")
-wait(0.5)
- RequestCommand:InvokeServer(";shirt me 100276101149100")
- RequestCommand:InvokeServer(";pants me 109662040845019")
-RequestCommand:InvokeServer(";head me 0")
-RequestCommand:InvokeServer(";face me 144075659")
-
-
-wait(1)
-
-local eye = char:FindFirstChild("Accessory (JohnEye)").Handle
-local arm = char:FindFirstChild("Right Arm")
-local tor = char:FindFirstChild("Torso")
-local ar2 = char:FindFirstChild("Left Arm")
-
-local RLeg = char:FindFirstChild("Right Leg")
-local head = char:FindFirstChild("Head")
-local LLeg = char:FindFirstChild("Left Leg")
-applyDecorationToPart(arm)
-applyDecorationToPart(ar2)
-eyePart(eye)
-Parter(tor)
-
-Color(arm, Color3.fromRGB(252, 255, 150))
-Color(ar2, Color3.fromRGB(252, 255, 150))
-Color(head, Color3.fromRGB(252, 255, 150))
-Color(tor, Color3.fromRGB(255, 255, 0))
-Color(RLeg, Color3.fromRGB(0, 200, 255))
-Color(LLeg, Color3.fromRGB(0, 200, 255))
-
-
-
-local arm = character:FindFirstChild("Right Arm") 
-local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-
-local isDead = false
-
-humanoid.Died:Connect(function()
-	isDead = true
-end)
-
-
-local animator = humanoid:FindFirstChildOfClass("Animator")
-
-local attackAnim = Instance.new("Animation")
-attackAnim.AnimationId = "rbxassetid://186934658"
-local attackTrack = animator:LoadAnimation(attackAnim)
-
-function KillTarget(target)
-    if target and target.Character then
-        local head = target.Character:FindFirstChild("Head")
-        if head then
-            local args = {
-                [1] = "SetLocked",
-                [2] = {
-                    [1] = head
-                },
-
-                [3] = false
-            }
-            remote:InvokeServer(unpack(args))
-            task.wait(0.1) 
-            local args2 = {
-                [1] = "Remove",
-                [2] = {
-                    [1] = head
-                }
-            }
-            remote:InvokeServer(unpack(args2))
-        end
-    end
-end
-
-
-local function attack()
-    attackTrack:Play() 
-    local hitPlayer = nil
-    local touchedConnection
-
-    local function onTouch(other)
-        local otherPlayer = Players:GetPlayerFromCharacter(other.Parent)
-        if otherPlayer and otherPlayer ~= player then
-            hitPlayer = otherPlayer
-        end
-    end
-
-    touchedConnection = arm.Touched:Connect(onTouch)
-    task.wait(0.5)
-    if touchedConnection then
-        touchedConnection:Disconnect()
-    end
-    if hitPlayer then
-               RequestCommand:InvokeServer(" ")
-  
-KillTarget(hitPlayer)
-        task.wait(1)
-        
-    end
-
-end
-
-
-local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-screenGui.Name = "AttackButtonGui"
-
-local attackButton = Instance.new("TextButton")
-attackButton.Name = "AttackButton"
-attackButton.Parent = screenGui
-attackButton.Size = UDim2.new(0, 160, 0, 50)
-attackButton.Position = UDim2.new(0.5, -80, 1, -90)
-attackButton.AnchorPoint = Vector2.new(0.5, 0)
-attackButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-attackButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-attackButton.Font = Enum.Font.GothamBold
-attackButton.Text = "niggos"
-attackButton.TextSize = 22
-attackButton.AutoButtonColor = true
-attackButton.ZIndex = 999
-
-
-attackButton.MouseButton1Click:Connect(function()
-    if not isDead then
-        attack()
-    end
-	end)
-end)
-
--- Local Player --
-local button = Instance.new("TextButton")
-button.Parent = localp
-button.BackgroundColor3 = blak
-button.BorderColor3 = rede
-button.BorderSizePixel = 3
-button.Name = "Anti-Robloxian"
-button.Position = UDim2.new(0,0,0,33)
-button.Size = UDim2.new(0.5,0,0,30)
-button.ZIndex = 2
-button.Font = tef
-button.FontSize = "Size14"
-button.Text = "Anti-Robloxian"
-button.TextColor3 = whit
-button.TextWrapped = true
-button.MouseButton1Down:connect(function()
-	local player = game.Players.LocalPlayer
-	local originalChar = player.Character or player.CharacterAdded:Wait()
-	local tool
-	while player.Character == originalChar do
-		for i, v in player:GetDescendants() do
+		local player = game.Players.LocalPlayer
+		local char = player.Character
+		local tool
+	
+		for _,v in ipairs(player:GetDescendants()) do
 			if v.Name == "SyncAPI" then
 				tool = v.Parent
 			end
 		end
-
-		for i, v in game.ReplicatedStorage:GetDescendants() do
+	
+		for _,v in ipairs(game.ReplicatedStorage:GetDescendants()) do
 			if v.Name == "SyncAPI" then
 				tool = v.Parent
 			end
 		end
-
+	
+		if not tool then return end
+	
 		local remote = tool.SyncAPI.ServerEndpoint
-
-		function _(args)
+		local function _(args)
 			remote:InvokeServer(unpack(args))
 		end
-
-		function DestroyPart(part)
-			spawn(function()
-				local args = {
-					[1] = "Remove",
-					[2] = {
-						[1] = part
+	
+		function SetRotation(part, rotation)
+			local args = {
+				[1] = "SyncRotate",
+				[2] = {
+					[1] = {
+						["Part"] = part,
+						["CFrame"] = CFrame.new(part.Position) * CFrame.Angles(
+							math.rad(rotation.X),
+							math.rad(rotation.Y),
+							math.rad(rotation.Z)
+						)
 					}
 				}
-				_(args)
-			end)
+			}
+			_(args)
 		end
-
-		function AddDecor(part, dec)
-			spawn(function()
-				local args = {
-					[1] = "CreateDecorations",
-					[2] = {
-						[1] = {
-							["Part"] = part,
-							["DecorationType"] = dec
-						}
-					}
-				}
-				_(args)
-			end)
-		end
-
-		function a()
-			local dist = 17
-			local distance = dist
-			local Player = game.Players.LocalPlayer
-
-			if Player then
-				local c = game.Players:GetChildren()
-				for i = 1, #c do
-					if c[i].Name ~= Player.Name then
-						if c[i].Character and c[i].Character:FindFirstChild("Head") then
-							local char = c[i].Character
-							local torso = game.Workspace[Player.Name]:FindFirstChild("Torso")
-							if torso and c[i]:DistanceFromCharacter(torso.Position) <= distance then
-								DestroyPart(char:FindFirstChild("Head"))
-								for _, part in ipairs(char:GetChildren()) do
-									if part:IsA("BasePart") then
-										AddDecor(part, "Fire")
-									end
-								end
-							end
+	
+		function RandomRotate()
+			for _,v in ipairs(workspace:GetDescendants()) do
+				if v:IsA("BasePart") then
+	
+					local skip = false
+	
+					-- No afectar jugadores
+					if v:FindFirstAncestorOfClass("Model") then
+						local model = v:FindFirstAncestorOfClass("Model")
+						if game.Players:GetPlayerFromCharacter(model) then
+							skip = true
 						end
+					end
+	
+					-- No afectar Sky
+					if v.Name == "Sky" then
+						skip = true
+					end
+	
+					-- Ignorar mesh específico
+					local mesh = v:FindFirstChildOfClass("SpecialMesh")
+					if mesh and tostring(mesh.MeshId):find("111891702759441") then
+						skip = true
+					end
+	
+					if v:IsA("MeshPart") and tostring(v.MeshId):find("111891702759441") then
+						skip = true
+					end
+	
+					if not skip then
+						task.spawn(function()
+							local randomRotation = Vector3.new(
+								math.random(0,360),
+								math.random(0,360),
+								math.random(0,360)
+							)
+							SetRotation(v, randomRotation)
+						end)
 					end
 				end
 			end
 		end
-
-
-		spawn(a)
-		wait()
-	end
-
+	
+		RandomRotate()
 end)
 --
 local button = Instance.new("TextButton")
