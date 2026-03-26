@@ -29341,108 +29341,183 @@ button.Text = "Face All"
 button.TextColor3 = whit
 button.TextWrapped = true
 button.MouseButton1Down:connect(function()
-	local Players = game:GetService("Players")
-	local ReplicatedStorage = game:GetService("ReplicatedStorage")
-	local RunService = game:GetService("RunService")
+--[[
 
-	local player = Players.LocalPlayer
-	local tool
+face all f3x
 
-	for _,v in player:GetDescendants() do
-		if v.Name == "SyncAPI" then
-			tool = v.Parent
-			break
-		end
-	end
+made by fro0kidd (Made a little better by F3XTroller)
 
-	if not tool then
-		for _,v in ReplicatedStorage:GetDescendants() do
-			if v.Name == "SyncAPI" then
-				tool = v.Parent
-				break
-			end
-		end
-	end
+not remove credits pls (oke!)
 
-	if not tool then return end
+--]]
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RequestCommandSilent = ReplicatedStorage:WaitForChild("HDAdminHDClient").Signals.RequestCommandSilent
 
-	local remote = tool.SyncAPI.ServerEndpoint
-	local function _remote(args)
-		return remote:InvokeServer(unpack(args))
-	end
+RequestCommandSilent:InvokeServer(";removeHats all")
 
-	local function SetLocked(p,b) _remote({"SetLocked",{p},b}) end
-	local function CreatePart(cf,parent) return _remote({"CreatePart","Normal",cf,parent}) end
-	local function AddMesh(p) _remote({"CreateMeshes",{{Part=p}}}) end
-	local function SetMesh(p,id) _remote({"SyncMesh",{{Part=p,MeshId="rbxassetid://"..id}}}) end
-	local function SetTexture(p,id) _remote({"SyncMesh",{{Part=p,TextureId="rbxassetid://"..id}}}) end
-	local function MeshResize(p,s) _remote({"SyncMesh",{{Part=p,Scale=s}}}) end
-	local function Remove(p) _remote({"Remove",{p}}) end
-	local function SetAnchor(p,b) _remote({"SyncAnchor",{{Part=p,Anchored=b}}}) end
-	local function SetCollision(p,b) _remote({"SyncCollision",{{Part=p,CanCollide=b}}}) end
-	local function SetTrans(p,v) _remote({"SyncMaterial",{{Part=p,Transparency=v}}}) end
+local A = game:GetService("Players")
 
-	local disabled = {}
+local B = game:GetService("RunService")
 
-	local function AddFace(char)
-		if disabled[char] then return end
 
-		local head = char:FindFirstChild("Head")
-		local hum = char:FindFirstChildOfClass("Humanoid")
-		if not head or not hum or hum.Health <= 0 then return end
+local C = A.LocalPlayer
 
-		for _,v in char:GetDescendants() do
-			if v:IsA("BasePart") then
-				SetLocked(v,false)
-				if v.Name == "Head" then
-					SetTrans(v,1)
-				end
-			elseif v:IsA("Accessory") then
-				local h = v:FindFirstChildWhichIsA("BasePart")
-				if h then
-					SetLocked(h,false)
-					SetTrans(h,1)
-				end
-			end
-		end
+local D
 
-		local part = CreatePart(head.CFrame, workspace)
-		if not part then return end
 
-		SetAnchor(part,true)
-		SetCollision(part,false)
-		SetTrans(part,0)
-		AddMesh(part)
-		SetMesh(part,"119607194146733")
-		SetTexture(part,game.CoreGui.CoolGui.Frame.Settings.Page1["Skybox/Decal ID"].TextBox.Text)
-		MeshResize(part,Vector3.new(1.1,1.5,0.01))
+for _, E in C:GetDescendants() do
 
-		hum.Died:Once(function()
-			disabled[char] = true
-			Remove(part)
-		end)
+    if E.Name == "SyncAPI" then
 
-		local con
-		con = RunService.Heartbeat:Connect(function()
-			if hum.Health > 0 and char.Parent then
-				_remote({"SyncMove",{{Part=part,CFrame=head.CFrame}}})
-			else
-				con:Disconnect()
-				Remove(part)
-			end
-		end)
-	end
+        D = E.Parent
 
-	for _,plr in Players:GetPlayers() do
-		if plr.Character then
-			AddFace(plr.Character)
-		end
-		plr.CharacterAdded:Connect(AddFace)
-	end
+        break
 
-	Players.PlayerAdded:Connect(function(plr)
-		plr.CharacterAdded:Connect(AddFace)
-	end)
+    end
+
+end
+
+
+if not D then
+
+    for _, E in pairs(game.ReplicatedStorage:GetDescendants()) do
+
+        if E.Name == "SyncAPI" then
+
+            D = E.Parent
+
+            break
+
+        end
+
+    end
+
+end
+
+
+if not D then return end
+
+
+local F = D.SyncAPI.ServerEndpoint
+
+local function G(H)
+
+    F:InvokeServer(unpack(H))
+
+end
+
+
+local I = {}
+
+
+local function J(K)
+
+    if I[K] then return end
+
+    if not K.Character then return end
+
+
+    local L = K.Character:FindFirstChild("Head")
+
+    if not L then return end
+
+
+    local M = L.CFrame * CFrame.new(0, 1.5, 0)
+
+
+    G({"SyncMaterial", {{Part = L, Transparency = 1}}})
+
+    G({"CreatePart", "Normal", M, workspace})
+
+    task.wait(0.25)
+
+
+    local N
+
+    for _, O in pairs(workspace:GetChildren()) do
+
+        if O:IsA("BasePart") and (O.Position - M.Position).Magnitude < 1 then
+
+            N = O
+
+            break
+
+        end
+
+    end
+
+
+    if N then
+
+        G({"SyncResize", {{Part = N, Size = Vector3.new(1.2,1.2,1.2), CFrame = M}}})
+
+        G({"SetCollision",{N}, false})
+
+        G({"SetLocked", {N}, true})
+
+        G({"CreateMeshes", {{Part = N}}})
+
+        task.wait(0.15)
+
+
+        G({"SyncMesh", {{
+
+            Part = N,
+
+            MeshId = "rbxassetid://111891702759441",
+
+            TextureId = frame.Settings.Page1["Skybox/Decal ID"].TextBox.Text,
+
+            Scale = Vector3.new(3,3,0.01)
+
+        }}})
+
+
+        I[K] = N
+
+    end
+
+end
+
+
+for _, P in ipairs(A:GetPlayers()) do
+
+    task.spawn(function()
+
+        J(P)
+
+        P.CharacterAdded:Connect(function()
+
+            task.wait(0.1)
+
+            J(P)
+
+        end)
+
+    end)
+
+end
+
+
+
+B.Heartbeat:Connect(function()
+
+    for K, N in pairs(I) do
+
+        if K.Character and K.Character:FindFirstChild("Head") and N and N.Parent then
+
+            local L = K.Character.Head
+
+            local Q = L.CFrame * CFrame.new(0, 1.099, 0)
+
+            G({"SyncMove", {{Part = N, CFrame = Q}}})
+
+        end
+
+    end
+
+end)
+
 end)
 --
 local button = Instance.new("TextButton")
